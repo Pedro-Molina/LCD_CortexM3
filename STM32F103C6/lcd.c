@@ -16,14 +16,15 @@ void lcd_sendCommand (uint8_t cmd)
    GPIOB->BRR = (1<<LCD_RS); /* RS = 0 for command */
    lcd_putValue(cmd);
 }
+/**************************
+Prints in LCD display
+***************************/
 void lcd_sendData (uint8_t data)
 {
    GPIOB->BSRR = (1<<LCD_RS); /* RS = 1 for data */
    lcd_putValue(data);
 }
-/**************************
-Prints in LCD display
-***************************/
+
 void lcd_putValue (uint8_t value)// 8-bit
 {
    GPIOA->BRR = 0xFF; /* clear PA0-PA7 */
@@ -65,7 +66,7 @@ void lcd_gotoXY(uint8_t x, uint8_t y)	//Cursor to X Y position
 	
 }
 
-void lcd_clr(void)				//Clears LCD
+void lcd_clr(void)	//Clears LCD
 {
 	lcd_sendCommand (1<<LCD_CLR);
 }
