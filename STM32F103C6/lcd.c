@@ -22,6 +22,7 @@ void lcd_sendData (uint8_t data)
    lcd_putValue(data);
 }
 /**************************
+Prints in LCD display
 ***************************/
 void lcd_putValue (uint8_t value)// 8-bit
 {
@@ -32,6 +33,43 @@ void lcd_putValue (uint8_t value)// 8-bit
    GPIOB->BRR = (1<<LCD_EN); /* EN = 0 for H-to-L pulse */
    delay_us(100); /* wait */
 }
+
+void lcd_string(uint8_t* data, uint8_t nBytes)	//Outputs string to LCD
+{
+register uint8_t i;
+
+	// check to make sure we have a good pointer
+	if (!data) return;
+
+	// print data
+	for(i=0; i<nBytes; i++)
+	{
+		lcd_sendData(data[i]);
+	}
+}
+
+void lcd_gotoXY(uint8_t x, uint8_t y)	//Cursor to X Y position
+{
+	register uint8_t DDRAMAddr;
+	// remap lines into proper order
+	switch(y)
+	{
+	case 0: DDRAMAddr = LCD_LINE0_DDRAMADDR+x; break;
+	case 1: DDRAMAddr = LCD_LINE1_DDRAMADDR+x; break;
+	case 2: DDRAMAddr = LCD_LINE2_DDRAMADDR+x; break;
+	case 3: DDRAMAddr = LCD_LINE3_DDRAMADDR+x; break;
+	default: DDRAMAddr = LCD_LINE0_DDRAMADDR+x;
+	}
+	// set data address
+	lcd_sendCommand(1<<LCD_DDRAM | DDRAMAddr);
+	
+}
+
+void lcd_clr(void)				//Clears LCD
+{
+	lcd_sendCommand (1<<LCD_CLR);
+}
+
 
 
 

@@ -8,21 +8,22 @@
 #include <stm32f103x6.h>
 #include "lcd.h"
 #include <stdint.h>
+#include "delay.h"
 
 int main (void)
- { 
-   // Write your code here
-       /* Enable clocks for GPIO ports */
-   RCC->APB2ENR |= 0xFC;
-   /* PA0-PA7 as outputs */
-   GPIOA->CRL = 0x33333333;
-   /* PB7-PB5 as outputs */
-   GPIOB->CRL = 0x33344444;
+ {  
+   RCC->APB2ENR |= 0xFC;       /* Enable clocks for GPIO ports */
+   GPIOA->CRL = 0x33333333;/* PA0-PA7 as outputs */
+   GPIOB->CRL = 0x33344444; /* PB7-PB5 as outputs */
     lcd_init();
-    lcd_sendData('H');
-     lcd_sendData('E');
-     lcd_sendData('H');
-     lcd_sendData('H');
+    lcd_gotoXY(3,0);
+    lcd_string("Hello World", 11);
+	delay_us(100000);
+	lcd_clr();
+	delay_us(100000);
+	lcd_gotoXY(0,0);
+    lcd_string("pitulin", 7);
+
    while (1){}
    }   
  
