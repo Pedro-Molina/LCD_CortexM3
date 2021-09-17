@@ -30,14 +30,16 @@ BIN2HEX=fromelf.exe
 #        G:/Mi unidad/Ing Computacion/Facultad/Cuarto año/Taller de proyecto I/Practica/TP1/Proteus/STM32F103C6/lcd.c
 #     G:/Mi unidad/Ing Computacion/Facultad/Cuarto año/Taller de proyecto I/Practica/TP1/Proteus/STM32F103C6/Debug/delay.o: TOOL=CC
 #        G:/Mi unidad/Ing Computacion/Facultad/Cuarto año/Taller de proyecto I/Practica/TP1/Proteus/STM32F103C6/delay.c
+#     G:/Mi unidad/Ing Computacion/Facultad/Cuarto año/Taller de proyecto I/Practica/TP1/Proteus/STM32F103C6/Debug/teclado.o: TOOL=CC
+#        G:/Mi unidad/Ing Computacion/Facultad/Cuarto año/Taller de proyecto I/Practica/TP1/Proteus/STM32F103C6/teclado.c
 
 # Build tree:
 all:	Debug
 
 Debug:	Debug.elf
 
-Debug.elf:	main.o system_stm32f1xx.o startup_stm32f103.o lcd.o delay.o 
-	$(LD)  $(LDFLAGS)  "main.o" "system_stm32f1xx.o" "startup_stm32f103.o" "lcd.o" "delay.o" --output "Debug.elf"
+Debug.elf:	main.o system_stm32f1xx.o startup_stm32f103.o lcd.o delay.o teclado.o 
+	$(LD)  $(LDFLAGS)  "main.o" "system_stm32f1xx.o" "startup_stm32f103.o" "lcd.o" "delay.o" "teclado.o" --output "Debug.elf"
 
 main.o:	../main.c 
 	$(CC) $(CCFLAGS)  "../main.c" -c -o "main.o"
@@ -54,6 +56,9 @@ lcd.o:	../lcd.c
 delay.o:	../delay.c 
 	$(CC) $(CCFLAGS)  "../delay.c" -c -o "delay.o"
 
+teclado.o:	../teclado.c 
+	$(CC) $(CCFLAGS)  "../teclado.c" -c -o "teclado.o"
+
 # tidy - delete all temporary files which are not involved in the target generation
 tidy:
 
@@ -65,3 +70,4 @@ clean:	tidy
 	rm -rf startup_stm32f103.o
 	rm -rf lcd.o
 	rm -rf delay.o
+	rm -rf teclado.o

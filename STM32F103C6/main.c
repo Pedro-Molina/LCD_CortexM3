@@ -10,22 +10,57 @@
 #include <stdint.h>
 #include "delay.h"
 
-int main (void)
- {  
-   RCC->APB2ENR |= 0xFC;       /* Enable clocks for GPIO ports */
-   GPIOA->CRL = 0x33333333;/* PA0-PA7 as outputs */
-	GPIOA->CRH = 0x44444333;
-   //GPIOB->CRL = 0x33344444; /* PB7-PB5 as outputs */
-    lcd_init();
-	lcd_gotoXY(3,0);
-    lcd_string("Hello World", 11);
-	delay_us(100000);
-	lcd_clr();
-	delay_us(100000);
-	lcd_gotoXY(0,0);
-    lcd_string("pitulin", 7);
+//int main (void)
+ //{  
+ //  RCC->APB2ENR |= 0xFC;       /* Enable clocks for GPIO ports */
+ //  GPIOA->CRL = 0x33333333;/* PA0-PA7 as outputs */
+//	GPIOA->CRH = 0x44444333;
+//   GPIOB->CRL = 0x33344444; /* PB7-PB5 as outputs */
+//	lcd_init();
+//	lcd_gotoXY(3,0);
+//    lcd_string("Hello World", 11);
+//	delay_us(100000);
+//	lcd_clr();
+//	delay_us(100000);
+//	lcd_gotoXY(0,0);
+ //   lcd_string("pitulin", 7);
 
-   while (1){}
-   }   
+   //while (1){}
+   //}   
+
+
+#include "teclado.h"
+
+
+
+static volatile uint8_t cont_MEF = 0,Flag_MEF = 0;
+
+
+int main(void)
+{
+		RCC->APB2ENR |= 0xFC;
+    //inicializar lcd
+		tecladoInit();//inicializar teclado matricial
+		//inicializar mef
+		//inicializar y activar interrupciones con timer
+    while (1) { 
+//	    if (Flag_MEF) {
+//		    //MEF_Update();
+//		    Flag_MEF=0;
+//	    }
+			uint8_t dato;
+			KEYPAD_Update(&dato);
+			delay_us(1);
+    }
+}
+/*
+ISR (TIMER0_COMPA_vect)
+{
+	if (++cont_MEF==25) {	
+		Flag_MEF=1;			//se ejecuta cada 100ms
+		cont_MEF = 0;
+	}
+}*/
+
  
  
