@@ -14,9 +14,10 @@ int main (void)
  {  
    RCC->APB2ENR |= 0xFC;       /* Enable clocks for GPIO ports */
    GPIOA->CRL = 0x33333333;/* PA0-PA7 as outputs */
-   GPIOB->CRL = 0x33344444; /* PB7-PB5 as outputs */
+	GPIOA->CRH = 0x44444333;
+   //GPIOB->CRL = 0x33344444; /* PB7-PB5 as outputs */
     lcd_init();
-    lcd_gotoXY(3,0);
+	lcd_gotoXY(3,0);
     lcd_string("Hello World", 11);
 	delay_us(100000);
 	lcd_clr();

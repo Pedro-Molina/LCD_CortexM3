@@ -1,6 +1,6 @@
-#define LCD_RS 7
-#define LCD_RW 6
-#define LCD_EN 5
+#define LCD_RS 10
+#define LCD_RW 9
+#define LCD_EN 8
 
 #define LCD_LINE0_DDRAMADDR		0x00
 #define LCD_LINE1_DDRAMADDR		0x40
