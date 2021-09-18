@@ -1,7 +1,7 @@
 #include "teclado.h"
 #include <stdint.h>
 
-static const uint8_t teclado[4][4] = {
+static const uint8_t teclas[4][4] = {
 	{'7','8','9','A'},
 	{'4','5','6','B'},
 	{'1','2','3','C'},
@@ -12,45 +12,50 @@ void tecladoInit(){
 	//pongo las filas como salida y columnas como entrada
 	//pongo los bits de salida en 0 y los de entrada en pull-up 1
 	
-		GPIOB->CRL = 0x88882222;
+	//PORT = 0x88883333;            /* PB0-PB3 as Outputs (Filas) && PB4-PB7 as Imput  (Columnas)*/
 }
 
 
 
-uint8_t KEYPAD_Scan(uint8_t *key){
-
-	uint8_t i;
-	const uint16_t aux[4]={0x7F00,0xBF00,0xDF00,0xEF00}; //{F1,F2,F3,F4} -> aux[i] implica 0 en Fila i
-	uint8_t result = 0, column;
-	int fila=-1;
-	for(i=0; i<4; i++){		//busco si alguna columna esta en 0
-		if ((GPIOB->IDR&(1<<i)) == 0){
-			column = i;
-			result = 1;
-			break;
-		}
-	}
-	
-	if (result){
-		for(i=0; i<4 ; i++){
-			GPIOB->ODR = aux[i];
-			if ((GPIOB->IDR&(1<<column)) == 0){	//miro si la fila coincide con la columna que encontre
-				fila = i;
-				break;
-			}
-		}
-		*key = teclado[column][fila];
-	}
-	//vuelvo a poner PORTD como estaba antes
-	GPIOB->ODR = 0x0F00;
-	return result;
+static uint8_t KEYPAD_Scan(uint8_t *key)
+{
+    const uint16_t aux[4]={0x7FFF,0xBFFF,0xDFFF,0xEFFF}; //{F1,F2,F3,F4} -> aux[i] implica 0 en Fila i
+    uint8_t i;
+    
+    uint32_t temp =  KEYPAD_PIN_OUT;        //Guardo el estado anterior del PIN_OUT
+    KEYPAD_PORT = 0x33338888;            /* PA8-PA11 as Outputs (FILAS) && PA12-PA15 as Inputs (COLUMNAS)*/
+    
+    //Barrido
+    for(i=0;i<4;i++){
+        KEYPAD_PIN_OUT = aux[i];                 //va poniendo un cero en cada fila para poder leerla
+           
+        if(~KEYPAD_PIN_IN & KEYPAD_PORT0){        //Leo la entrada correspondiente del Keypad y hago un AND bit a bit con el PIN que me interesa del puerto.
+            //Si entra al IF, Existe un 1 logico en el PIN deseado
+            *key=teclas[i][0];
+            return 1;
+        }
+        if(~KEYPAD_PIN_IN & KEYPAD_PORT1){
+            *key=teclas[i][1];
+            return 1;
+        }
+        if(~KEYPAD_PIN_IN & KEYPAD_PORT2){
+            *key=teclas[i][2];
+            return 1;
+        }
+        if(~KEYPAD_PIN_IN & KEYPAD_PORT3){
+            *key=teclas[i][3];
+            return 1;
+        }
+    }
+    
+    KEYPAD_PIN_OUT = temp;
+    return 0;
 }
-
 
 uint8_t KEYPAD_Update (uint8_t *pkey)
 {
 	static uint8_t Old_key;
-	uint8_t Key; 
+	static uint8_t Key; 
 	static int Last_valid_key=0xFF; // no hay tecla presionada
 	if(!KEYPAD_Scan(&Key)) {
 		Old_key=0xFF; // no hay tecla presionada
