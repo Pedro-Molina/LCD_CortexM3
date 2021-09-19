@@ -10,25 +10,18 @@
 #include <stdint.h>
 #include "delay.h"
 #include "teclado.h"
+#include "mef.h"
 
 int main (void)
  {  
-	uint8_t dato = '0';
    RCC->APB2ENR |= 0xFC;       /* Enable clocks for GPIO ports */
    GPIOA->CRL = 0x33333333;/* PA0-PA7 as outputs */
 	GPIOA->CRH = 0x44444333;
-	//tecladoInit();
 	lcd_init();
-	//GPIOB->ODR =  0xFFF0;
-while (1) { 
-//	    if (Flag_MEF) {
-//		    //MEF_Update();
-//		    Flag_MEF=0;
-//	    }
-		
-		if(	KEYPAD_Update(&dato)){
-			  lcd_string(&dato,1);
-		}
+	MEF_Init();
+	while (1) { 
+			MEF_Update();
+			delay_us(60 );
     }
 }   
 

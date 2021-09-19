@@ -32,14 +32,16 @@ BIN2HEX=fromelf.exe
 #        C:/Users/lenovo/Desktop/TP1/LCD_CortexM3/STM32F103C6/delay.c
 #     C:/Users/lenovo/Desktop/TP1/LCD_CortexM3/STM32F103C6/Debug/teclado.o: TOOL=CC
 #        C:/Users/lenovo/Desktop/TP1/LCD_CortexM3/STM32F103C6/teclado.c
+#     C:/Users/lenovo/Desktop/TP1/LCD_CortexM3/STM32F103C6/Debug/mef.o: TOOL=CC
+#        C:/Users/lenovo/Desktop/TP1/LCD_CortexM3/STM32F103C6/mef.c
 
 # Build tree:
 all:	Debug
 
 Debug:	Debug.elf
 
-Debug.elf:	main.o SYSTEM~1.o STARTU~1.o lcd.o delay.o teclado.o 
-	$(LD)  $(LDFLAGS)  "main.o" "SYSTEM~1.o" "STARTU~1.o" "lcd.o" "delay.o" "teclado.o" --output "Debug.elf"
+Debug.elf:	main.o SYSTEM~1.o STARTU~1.o lcd.o delay.o teclado.o mef.o 
+	$(LD)  $(LDFLAGS)  "main.o" "SYSTEM~1.o" "STARTU~1.o" "lcd.o" "delay.o" "teclado.o" "mef.o" --output "Debug.elf"
 
 main.o:	../main.c 
 	$(CC) $(CCFLAGS)  "../main.c" -c -o "main.o"
@@ -59,6 +61,9 @@ delay.o:	../delay.c
 teclado.o:	../teclado.c 
 	$(CC) $(CCFLAGS)  "../teclado.c" -c -o "teclado.o"
 
+mef.o:	../mef.c 
+	$(CC) $(CCFLAGS)  "../mef.c" -c -o "mef.o"
+
 # tidy - delete all temporary files which are not involved in the target generation
 tidy:
 
@@ -71,3 +76,4 @@ clean:	tidy
 	rm -rf lcd.o
 	rm -rf delay.o
 	rm -rf teclado.o
+	rm -rf mef.o
