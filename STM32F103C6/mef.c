@@ -51,12 +51,13 @@ void MEF_Update(){
 }
 
 void prepararHora(){
-	//stringTime[0] = ((hora/10)% 10) + '0';
-	//stringTime[3] = ((min/10)% 10) + '0';
-	//stringTime[6] = ((seg/10)% 10) + '0';
-	//stringTime[1] = ((hora)% 10) + '0';
-	//stringTime[4] = ((min)% 10) + '0';
-	//stringTime[7] = ((seg)% 10) + '0';
+	//stringTime[1] =  '0' + (uint8_t)((hora)%  (uint8_t)10);
+	stringTime[4] =  '0' + (uint8_t)((min)%  (uint8_t)10);
+	stringTime[7] =  '0' + (uint8_t)((seg)%  (uint8_t)10);
+	stringTime[0] = ((hora/10)% 10) + '0';
+	stringTime[3] = ((min/10)% 10) + '0';
+	stringTime[6] = ((seg/10)% 10) + '0';
+
 	//imprimir la hora en el led
 	lcd_gotoXY(0, 0);
 	lcd_string(stringTime, 8);
@@ -97,7 +98,7 @@ void processCerrado(){
 void processAbierto(){
 	lcd_gotoXY(0, 1);
 	lcd_string("ABIERTO "  , 8);
-	GPIOB -> ODR |= 0x0002;
+	GPIOB -> ODR = 0x0002;
 	if(++time_state == 5){
 		actual_state = cerrado;
 		time_state = 0;

@@ -20,7 +20,7 @@ void tecladoInit(){
 
 static uint8_t KEYPAD_Scan(uint8_t *key)
 {
-    const uint16_t aux[4]={0x7FFF,0xBFFF,0xDFFF,0xEFFF}; //{F1,F2,F3,F4} -> aux[i] implica 0 en Fila i
+    const uint16_t aux[4]={0x7F00,0xBF00,0xDF00,0xEF00}; //{F1,F2,F3,F4} -> aux[i] implica 0 en Fila i
     uint8_t i;
     
     uint32_t temp =  KEYPAD_PIN_OUT;        //Guardo el estado anterior del PIN_OUT
