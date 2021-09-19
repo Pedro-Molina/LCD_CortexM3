@@ -5,7 +5,7 @@ void lcd_init()
    GPIOA->BRR = (1<<LCD_RW); //same as GPIOA->ODR &= ~(1<<LCD_RW); /* LCD_RW = 0 */
    delay_us(3000); /* wait 3ms */
    lcd_sendCommand(0x38); /* init. LCD 2 line,5´7 matrix */
-   lcd_sendCommand(0x0E); /* display on, cursor on */
+   lcd_sendCommand(0x0C); /* display on, cursor on */
    lcd_sendCommand(0x01); /* clear LCD */
    delay_us(2000); /* wait 2ms */
    lcd_sendCommand(0x06); /* shift cursor right */

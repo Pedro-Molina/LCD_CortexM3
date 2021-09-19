@@ -14,14 +14,16 @@
 
 int main (void)
  {  
-   RCC->APB2ENR |= 0xFC;       /* Enable clocks for GPIO ports */
-   GPIOA->CRL = 0x33333333;/* PA0-PA7 as outputs */
+	uint8_t dato = 0;
+	RCC->APB2ENR |= 0xFC;       /* Enable clocks for GPIO ports */
+	GPIOA->CRL = 0x33333333;/* PA0-PA7 as outputs */
 	GPIOA->CRH = 0x44444333;
+	GPIOB->CRL = 0x44444443;
 	lcd_init();
 	MEF_Init();
 	while (1) { 
 			MEF_Update();
-			delay_us(60 );
+			delay_us(1000 );
     }
 }   
 

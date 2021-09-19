@@ -9,8 +9,8 @@ typedef enum {cerrado,abierto,ingresar_contra,denegado} state_name;
 static state_name actual_state;
 static uint8_t time_state= 0;
 static uint8_t hora=0,min=0,seg=0,cantTiempo = 9;
-static uint8_t stringTime[8]= {'0','0',':','0','0',':','0','0'};
-static uint8_t clave[4] = {4,3,2,1},clavePos=0;
+static uint8_t stringTime[8]= {'1','0',':','0','0',':','0','0'};
+static uint8_t clave[4] = {'4','3','2','1'},clavePos=0;
 
 //funciones privadas
 void actualizarTiempo(void);
@@ -50,14 +50,13 @@ void MEF_Update(){
 	}
 }
 
-void prepararHora(){/*
-	stringTime[0] = ((hora/10)% 10) + 48;
-	stringTime[1] = (hora % 10) +48;
-	stringTime[3] = ((min/10)% 10) + 48;
-	stringTime[4] = (min % 10) + 48;
-	stringTime[6] = ((seg/10)% 10) + 48;
-	stringTime[7] = (seg % 10) +48;
-	*/
+void prepararHora(){
+	//stringTime[0] = ((hora/10)% 10) + '0';
+	//stringTime[3] = ((min/10)% 10) + '0';
+	//stringTime[6] = ((seg/10)% 10) + '0';
+	//stringTime[1] = ((hora)% 10) + '0';
+	//stringTime[4] = ((min)% 10) + '0';
+	//stringTime[7] = ((seg)% 10) + '0';
 	//imprimir la hora en el led
 	lcd_gotoXY(0, 0);
 	lcd_string(stringTime, 8);
@@ -88,15 +87,21 @@ void processCerrado(){
 	}
 	if (numero){
 		actual_state  = ingresar_contra;
+		lcd_gotoXY(0, 1);
+		lcd_string("        " , 8);
 		compararContra(numero);
 		time_state = 0;
 	}
 }
 
 void processAbierto(){
+	lcd_gotoXY(0, 1);
+	lcd_string("ABIERTO "  , 8);
+	GPIOB -> ODR |= 0x0002;
 	if(++time_state == 5){
 		actual_state = cerrado;
 		time_state = 0;
+		GPIOB -> ODR &= 0xFFFD;
 	}
 }
 
@@ -127,12 +132,10 @@ void compararContra(uint8_t nuevoNum){
 	if (nuevoNum == clave[clavePos]){
 			//imprimir * en la posicion clavePos
 			lcd_gotoXY(clavePos, 1);
-			lcd_putValue ('*');
-			if (clavePos == 4){
+			lcd_string ("*",1);
+			if (clavePos == 3){
 				actual_state = abierto;
 				clavePos = 0;
-				lcd_gotoXY(0, 1);
-				lcd_string("ABIERTO "  , 8);
 			}else{
 				clavePos++;
 			}
