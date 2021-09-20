@@ -9,7 +9,7 @@ typedef enum {cerrado,abierto,ingresar_contra,denegado} state_name;
 static state_name actual_state;
 static uint8_t time_state= 0;
 static uint8_t hora=0,min=0,seg=0,cantTiempo = 9;
-static uint8_t stringTime[8]= {'1','0',':','0','0',':','0','0'};
+static uint8_t stringTime[8]= {'0','0',':','0','0',':','0','0'};
 static uint8_t clave[4] = {'4','3','2','1'},clavePos=0;
 
 //funciones privadas

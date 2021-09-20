@@ -11,6 +11,7 @@
 #include "delay.h"
 #include "teclado.h"
 #include "mef.h"
+#include "timer.h"
 
 int main (void)
  {  
@@ -21,9 +22,12 @@ int main (void)
 	
 	lcd_init();
 	MEF_Init();
+	timer_init();
 	while (1) { 
+		if (timer_getFlag()){
 			MEF_Update();
-			delay_us(1000 );
+			timer_resetFlag();
+		}
     }
 }   
 
