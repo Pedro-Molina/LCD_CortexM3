@@ -15,11 +15,11 @@
 
 int main (void)
  {  
-	RCC->APB2ENR |= 0xFC;       /* Enable clocks for GPIO ports */
+	RCC->APB2ENR |= 0xFC;     /* Enable clocks for GPIO ports */
 	GPIOA->CRL = 0x33333333;/* PA0-PA7 as outputs */
 	GPIOA->CRH = 0x44444333;
 	GPIOB->CRL = 0x44444434;
-	
+	tecladoInit();
 	lcd_init();
 	MEF_Init();
 	timer_init();
